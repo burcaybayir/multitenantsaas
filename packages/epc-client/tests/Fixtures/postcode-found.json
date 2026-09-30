@@ -1,0 +1,17 @@
+{
+  "status": 200,
+  "result": {
+    "postcode": "BS1 4DJ",
+    "quality": 1,
+    "eastings": 358697,
+    "northings": 172653,
+    "country": "England",
+    "nhs_ha": "South West",
+    "longitude": -2.597298,
+    "latitude": 51.452293,
+    "region": "South West",
+    "admin_district": "Bristol, City of",
+    "outcode": "BS1",
+    "incode": "4DJ"
+  }
+}

@@ -4,8 +4,8 @@ Multi-tenant SaaS for UK renewable energy installers (solar PV, heat pumps).
 Each installer company is a tenant with its **own MySQL database and its own
 MySQL user**, identified by subdomain: `acme.installhub.localhost`.
 
-> Work in progress. Phase 1 (foundation and tenancy) is done. Full architecture
-> docs arrive in Phase 6.
+> Work in progress. Phase 1 (foundation and tenancy) and Phase 2 (EPC client
+> package) are done. Full architecture docs arrive in Phase 6.
 
 ## Run locally (Docker)
 
@@ -31,6 +31,13 @@ curl -X POST http://installhub.localhost/api/tenants \
 # Poll the URL from the Location header until "status": "active"
 ```
 
+## Packages
+
+- [`packages/epc-client`](packages/epc-client): `installhub/epc-client`, a typed
+  client for the EPC register and postcodes.io. Standalone (own tests, own
+  `composer.json`), consumed through a Composer path repository so it can be
+  moved to its own repository without code changes.
+
 ## Tests
 
 The suite runs against **real MySQL 8 and Redis**. Tenant isolation depends
@@ -40,6 +47,10 @@ that SQLite or array drivers can't reproduce.
 ```bash
 docker compose exec app composer test   # Pest
 docker compose exec app composer lint   # Pint
+docker compose exec app vendor/bin/phpstan analyse   # PHPStan level 8 (Larastan)
+
+# The package's own suite
+docker compose exec app sh -c "cd packages/epc-client && composer install && composer test"
 ```
 
 The MySQL app user needs the grants in `docker/mysql/init.sql` (the tests

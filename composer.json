@@ -11,8 +11,21 @@
         "heat-pumps"
     ],
     "license": "proprietary",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/epc-client",
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "installhub/epc-client": "1.0.x-dev"
+                }
+            }
+        }
+    ],
     "require": {
         "php": "^8.3",
+        "installhub/epc-client": "^1.0@dev",
         "laravel/framework": "^13.17",
         "laravel/horizon": "^5.50",
         "laravel/tinker": "^3.0",
@@ -21,6 +34,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.12",
         "laravel/pail": "^1.2.5",
         "laravel/pint": "^1.27",
         "mockery/mockery": "^1.6",

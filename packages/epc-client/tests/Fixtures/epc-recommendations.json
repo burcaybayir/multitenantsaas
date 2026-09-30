@@ -1,0 +1,23 @@
+{
+  "column-names": ["lmk-key", "improvement-item", "improvement-summary-text", "improvement-descr-text", "improvement-id", "improvement-id-text", "indicative-cost"],
+  "rows": [
+    {
+      "lmk-key": "1765432098712342023030114223355018",
+      "improvement-item": "1",
+      "improvement-summary-text": "",
+      "improvement-descr-text": "Solar photovoltaic panels, 2.5 kWp",
+      "improvement-id": "34",
+      "improvement-id-text": "Solar photovoltaic panels, 2.5 kWp",
+      "indicative-cost": "£3,500 - £5,500"
+    },
+    {
+      "lmk-key": "1765432098712342023030114223355018",
+      "improvement-item": "2",
+      "improvement-summary-text": "Air source heat pump",
+      "improvement-descr-text": "Replace boiler with air source heat pump",
+      "improvement-id": "45",
+      "improvement-id-text": "Air source heat pump",
+      "indicative-cost": "£7,000 - £13,000"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+    "name": "installhub/epc-client",
+    "description": "Typed client for the UK EPC Open Data API and postcodes.io, with retries, backoff and rate-limit handling.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "epc",
+        "energy performance certificate",
+        "postcodes",
+        "uk",
+        "laravel"
+    ],
+    "require": {
+        "php": "^8.3",
+        "illuminate/http": "^12.0|^13.0",
+        "illuminate/support": "^12.0|^13.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.27",
+        "pestphp/pest": "^4.0",
+        "phpstan/phpstan": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "InstallHub\\EpcClient\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "InstallHub\\EpcClient\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "InstallHub\\EpcClient\\EpcClientServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "pest",
+        "analyse": "phpstan analyse",
+        "lint": "pint --test"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
