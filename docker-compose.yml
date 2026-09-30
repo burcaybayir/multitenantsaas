@@ -1,0 +1,79 @@
+name: installhub
+
+x-app: &app
+  build:
+    context: .
+    target: dev
+  image: installhub-app:dev
+  env_file: .env
+  volumes:
+    - ./:/var/www/html
+  depends_on:
+    mysql:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  restart: unless-stopped
+
+services:
+  app:
+    <<: *app
+    environment:
+      DB_HOST: mysql
+      REDIS_HOST: redis
+
+  horizon:
+    <<: *app
+    command: ["php", "artisan", "horizon"]
+    environment:
+      DB_HOST: mysql
+      REDIS_HOST: redis
+    # Horizon handles SIGTERM gracefully: in-flight jobs finish before exit.
+    stop_signal: SIGTERM
+    stop_grace_period: 60s
+
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "${APP_PORT:-80}:80"
+    volumes:
+      - ./public:/var/www/html/public:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:-root}"
+      MYSQL_DATABASE: "${DB_DATABASE:-installhub}"
+      MYSQL_USER: "${DB_USERNAME:-installhub}"
+      MYSQL_PASSWORD: "${DB_PASSWORD:-secret}"
+    ports:
+      - "${FORWARD_DB_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/01-grants.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${DB_ROOT_PASSWORD:-root}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${FORWARD_REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  mysql-data:
+  redis-data:
